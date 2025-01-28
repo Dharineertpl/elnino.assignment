@@ -1,0 +1,31 @@
+<?php
+
+/** @var $block \Magecat\Cat\Block\Product\Vendor */
+/** @var $product \Magento\Catalog\Model\Product */
+
+// Retrieve product from the block
+$product = $block->getProduct();
+
+if ($product && $product->getId()):
+    // Retrieve the vendor IDs (comma-separated) from the product
+    $vendorIds = $product->getVendor();
+
+    if ($vendorIds):
+        // Convert the IDs to labels
+        $vendorLabels = $block->getVendorLabels($vendorIds);
+        ?>
+        <div>
+            <label for="vendor-dropdown">Vendors:</label>
+            <select id="vendor-dropdown" name="vendor-dropdown">
+                <?php foreach ($vendorLabels as $vendorLabel): ?>
+                    <option value="<?= $block->escapeHtml($vendorLabel); ?>"><?= $block->escapeHtml($vendorLabel); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <?php
+    else:
+        echo "<div>No vendor data available</div>";
+    endif;
+else:
+    echo "<div>No product data available</div>";
+endif;
